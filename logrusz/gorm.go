@@ -1,4 +1,4 @@
-package postgrez
+package logrusz
 
 import (
 	"errors"
@@ -10,37 +10,37 @@ import (
 	"time"
 )
 
-type loggerus struct {
+func NewGormLogger(log *logrus.Logger) *logx {
+	return &logx{
+		Logger:                log,
+		SkipErrRecordNotFound: true,
+	}
+}
+
+type logx struct {
 	Logger                *logrus.Logger
 	SlowThreshold         time.Duration
 	SourceField           string
 	SkipErrRecordNotFound bool
 }
 
-func NewLogger(log *logrus.Logger) *loggerus {
-	return &loggerus{
-		Logger:                log,
-		SkipErrRecordNotFound: true,
-	}
-}
-
-func (l *loggerus) LogMode(logger.LogLevel) logger.Interface {
+func (l *logx) LogMode(logger.LogLevel) logger.Interface {
 	return l
 }
 
-func (l *loggerus) Info(ctx context.Context, s string, args ...interface{}) {
+func (l *logx) Info(ctx context.Context, s string, args ...interface{}) {
 	l.Logger.WithContext(ctx).Infof(s, args)
 }
 
-func (l *loggerus) Warn(ctx context.Context, s string, args ...interface{}) {
+func (l *logx) Warn(ctx context.Context, s string, args ...interface{}) {
 	l.Logger.WithContext(ctx).Warnf(s, args)
 }
 
-func (l *loggerus) Error(ctx context.Context, s string, args ...interface{}) {
+func (l *logx) Error(ctx context.Context, s string, args ...interface{}) {
 	l.Logger.WithContext(ctx).Errorf(s, args)
 }
 
-func (l *loggerus) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
+func (l *logx) Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error) {
 	elapsed := time.Since(begin)
 	sql, _ := fc()
 	fields := logrus.Fields{}

@@ -91,7 +91,7 @@ func (c *Config) Connect(postgreOptions ...postgreOption) (*gorm.DB, error) {
 		c.Logger.Log = logrusz.New().Writer()
 	}
 
-	logger := NewLogger(c.Logger.Log)
+	logger := logrusz.NewGormLogger(c.Logger.Log)
 
 	setting := postgres.Config{
 		DSN: dsn,
