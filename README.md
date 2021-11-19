@@ -1,6 +1,6 @@
 ## 資料庫包＋Logrus
 ***
-### MongoDb
+### MongoDB
 
 ```go
 // ReplicaSet
@@ -19,16 +19,16 @@ db, _ := mongoz.New(host).
     Connect()
 ```
 
-### Postgre
+### PostgreSQL
 
 ```go
 pgdb, err := postgrez.New("192.168.10.101", "6432", "postgres", "1qaz2wsx", "gpsa_tx").
     // SetTimeZone("PRC").
-	// SetLogger(logrusz.New().SetLevel("debug").Writer()).
+    // SetLogger(logrusz.New().SetLevel("debug").Writer()).
     Connect(postgrez.Pool(1, 10, 10))
 ```
 
-### Mysql
+### MySQL
 
 ```go
 
@@ -45,10 +45,11 @@ mydb, err := mysqlz.New("127.0.0.1", "3306", "root", "iLove5566", "line").
 
 ```go
 l := logrusz.New().
-		SetLevel("debug").
-		SetPath("./logs").
-		SetPrefix("gf-").
-		Writer()
+    // SetLevel("debug").
+    // SetPath("./logs").
+    // SetPrefix("gf-").
+    Writer()
+
 // example
 l.Println()
 l.Info()
