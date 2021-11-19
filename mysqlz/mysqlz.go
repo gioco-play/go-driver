@@ -39,7 +39,7 @@ type Options struct {
 type DefaultParameters struct {
 	Charset   string
 	ParseTime string
-	Loc       string
+	Loc       string // parseTime=true
 }
 
 type CustomParameter struct {
@@ -109,12 +109,13 @@ func New(host, port, user, password, dbname string) *Config {
 	}
 }
 
-func (c *Config) SetParseTime(p string) *Config {
-	c.DefaultParameters.ParseTime = p
+func (c *Config) SetParseTime(p bool) *Config {
+	c.DefaultParameters.ParseTime = fmt.Sprintf("%v", p)
 	return c
 }
 
 func (c *Config) SetLoc(loc string) *Config {
+	c.DefaultParameters.ParseTime = "true"
 	c.DefaultParameters.Loc = loc
 	return c
 }
@@ -143,7 +144,6 @@ func (c *Config) Connect(poolOptions ...poolOption) (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s", c.User, c.Password, c.Host, c.Port, c.DBName, c.DefaultParameters.Charset)
 
-	fmt.Println(dsn)
 	if c.DefaultParameters.ParseTime != "" {
 		dsn += fmt.Sprintf("&parseTime=%s", c.DefaultParameters.ParseTime)
 	}
@@ -154,7 +154,6 @@ func (c *Config) Connect(poolOptions ...poolOption) (*gorm.DB, error) {
 	if c.AppendParameter != "" {
 		dsn += c.AppendParameter
 	}
-	fmt.Println(dsn)
 
 	// init logger
 	if c.Logger.Log == nil {
