@@ -32,7 +32,7 @@ type Logger struct {
 	Log *logrus.Logger
 }
 
-type postgreOption func(sqlDB *sql.DB)
+type poolOption func(sqlDB *sql.DB)
 
 func New(host, port, user, password, dbname string) *Config {
 	return &Config{
@@ -72,7 +72,7 @@ func (c *Config) SetOptions(opts Options) *Config {
 	return c
 }
 
-func (c *Config) Connect(postgreOptions ...postgreOption) (*gorm.DB, error) {
+func (c *Config) Connect(poolOptions ...poolOption) (*gorm.DB, error) {
 
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s", c.Host, c.Port, c.User, c.Password, c.DBName)
 
@@ -113,7 +113,7 @@ func (c *Config) Connect(postgreOptions ...postgreOption) (*gorm.DB, error) {
 	}
 
 	// Options (Pool)
-	for _, option := range postgreOptions {
+	for _, option := range poolOptions {
 		option(sqlDB)
 	}
 
@@ -121,7 +121,7 @@ func (c *Config) Connect(postgreOptions ...postgreOption) (*gorm.DB, error) {
 
 }
 
-func Pool(maxIdle, maxOpen, maxLifetime int) postgreOption {
+func Pool(maxIdle, maxOpen, maxLifetime int) poolOption {
 	return func(sqlDB *sql.DB) {
 		sqlDB.SetMaxIdleConns(maxIdle)
 		sqlDB.SetMaxOpenConns(maxOpen)

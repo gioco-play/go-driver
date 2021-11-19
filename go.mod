@@ -7,6 +7,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	go.mongodb.org/mongo-driver v1.7.3
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110
+	gorm.io/driver/mysql v1.2.0 // indirect
 	gorm.io/driver/postgres v1.2.1
-	gorm.io/gorm v1.22.0
+	gorm.io/gorm v1.22.3
 )
