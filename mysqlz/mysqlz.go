@@ -95,7 +95,7 @@ func New(host, port, user, password, dbname string) *Config {
 		Password: password,
 		DBName:   dbname,
 		DefaultParameters: DefaultParameters{
-			Charset:   "utf8",
+			Charset:   "utf8mb4",
 			ParseTime: "true",
 			Loc:       "UTC",
 		},
