@@ -56,6 +56,5 @@ l.Info()
 l.Warn()
 l.Panic()
 ...
-...
 ```
 
